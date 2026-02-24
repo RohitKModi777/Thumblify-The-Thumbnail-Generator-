@@ -1,29 +1,45 @@
 import { motion } from "motion/react";
 import type { TestimonialCardProps } from "../types";
+import { StarIcon } from "lucide-react";
 
 export default function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
     return (
-        <motion.div className="p-4 rounded-lg mx-4 w-72 shrink-0 bg-pink-950/30 border border-pink-950"
+        <motion.div
+            className="p-4 rounded-xl mx-4 w-72 shrink-0 gold-shimmer"
+            style={{
+                background: "linear-gradient(160deg, #0f0c1f 0%, #130e24 100%)",
+                border: "1px solid rgba(200,158,40,0.18)",
+                boxShadow: "0 4px 24px -8px rgba(200,158,40,0.12)",
+            }}
             initial={{ y: 150, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.15, type: "spring", stiffness: 320, damping: 70, mass: 1 }}
+            transition={{ delay: index * 0.08, type: "spring", stiffness: 320, damping: 70 }}
         >
-            <div className="flex gap-2">
-                <img className="size-11 rounded-full" src={testimonial.image} alt={testimonial.name} height={50} width={50} />
-                <div className="flex flex-col">
-                    <div className="flex items-center gap-1">
-                        <p>{testimonial.name}</p>
-                        <svg className="mt-0.5" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M4.555.72a4 4 0 0 1-.297.24c-.179.12-.38.202-.59.244a4 4 0 0 1-.38.041c-.48.039-.721.058-.922.129a1.63 1.63 0 0 0-.992.992c-.071.2-.09.441-.129.922a4 4 0 0 1-.041.38 1.6 1.6 0 0 1-.245.59 3 3 0 0 1-.239.297c-.313.368-.47.551-.56.743-.213.444-.213.96 0 1.404.09.192.247.375.56.743.125.146.187.219.24.297.12.179.202.38.244.59.018.093.026.189.041.38.039.48.058.721.129.922.163.464.528.829.992.992.2.071.441.09.922.129.191.015.287.023.38.041.21.042.411.125.59.245.078.052.151.114.297.239.368.313.551.47.743.56.444.213.96.213 1.404 0 .192-.09.375-.247.743-.56.146-.125.219-.187.297-.24.179-.12.38-.202.59-.244a4 4 0 0 1 .38-.041c.48-.039.721-.058.922-.129.464-.163.829-.528.992-.992.071-.2.09-.441.129-.922a4 4 0 0 1 .041-.38c.042-.21.125-.411.245-.59.052-.078.114-.151.239-.297.313-.368.47-.551.56-.743.213-.444.213-.96 0-1.404-.09-.192-.247-.375-.56-.743a4 4 0 0 1-.24-.297 1.6 1.6 0 0 1-.244-.59 3 3 0 0 1-.041-.38c-.039-.48-.058-.721-.129-.922a1.63 1.63 0 0 0-.992-.992c-.2-.071-.441-.09-.922-.129a4 4 0 0 1-.38-.041 1.6 1.6 0 0 1-.59-.245A3 3 0 0 1 7.445.72C7.077.407 6.894.25 6.702.16a1.63 1.63 0 0 0-1.404 0c-.192.09-.375.247-.743.56m4.07 3.998a.488.488 0 0 0-.691-.69l-2.91 2.91-.958-.957a.488.488 0 0 0-.69.69l1.302 1.302c.19.191.5.191.69 0z" fill="#2196F3" />
-                        </svg>
-                    </div>
-                    <span className="text-xs text-slate-500">{testimonial.handle}</span>
+            {/* Stars */}
+            <div className="flex items-center gap-0.5 mb-3">
+                {[...Array(5)].map((_, i) => (
+                    <StarIcon key={i} className="size-3 fill-amber-400 text-amber-400" />
+                ))}
+            </div>
+
+            <p className="text-sm leading-relaxed mb-4" style={{ color: "#a1a1aa" }}>
+                "{testimonial.quote}"
+            </p>
+
+            <div className="flex gap-3 items-center pt-3" style={{ borderTop: "1px solid rgba(200,158,40,0.12)" }}>
+                <img
+                    className="size-9 rounded-full"
+                    style={{ border: "1.5px solid rgba(200,158,40,0.35)" }}
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    height={36} width={36}
+                />
+                <div>
+                    <p className="text-sm font-medium" style={{ color: "#f5c842" }}>{testimonial.name}</p>
+                    <span className="text-xs" style={{ color: "#71717a" }}>{testimonial.handle}</span>
                 </div>
             </div>
-            <p className="text-sm pt-4 text-slate-500 line-clamp-2">
-                {testimonial.quote}
-            </p>
         </motion.div>
     );
 }

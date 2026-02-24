@@ -1,109 +1,125 @@
-import { createContext, useEffect,useContext } from "react";
-import type {IUser} from "../assets/assets"
+import { createContext, useEffect, useContext } from "react";
+import type { IUser } from "../assets/assets"
 import { useState } from "react";
 import toast from "react-hot-toast";
 import api from "../config/api";
 
-interface AuthContextProps{
-    isLoggedIn : boolean;
-    setIsLoggedIn:(isLoggedIn:boolean)=> void;
-    user:IUser | null;
-    setUser : (user:IUser | null) =>void;
-    login:(user:{email:string; password:string})=>Promise<void>
-    signUp:(user:{name:string;email:string; password:string})=>Promise<void>
-    logout : ()=>Promise<void>;
+interface AuthContextProps {
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  user: IUser | null;
+  setUser: (user: IUser | null) => void;
+  login: (user: { email: string; password: string }) => Promise<void>
+  signUp: (user: { name: string; email: string; password: string }) => Promise<void>
+  logout: () => Promise<void>;
+  googleLogin: (credential: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps>({
-    isLoggedIn : false,
-    setIsLoggedIn:()=>{},
-    user:null,
-    setUser:()=>{},
-    login: async ()=>{},
-    signup: async ()=>{},
-    logout: async()=>{}
+  isLoggedIn: false,
+  setIsLoggedIn: () => { },
+  user: null,
+  setUser: () => { },
+  login: async () => { },
+  signUp: async () => { },
+  logout: async () => { },
+  googleLogin: async () => { },
 })
 
 
-export const AuthProvider =({children}:{children: React.ReactNode})=>{
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const [user,setUser] = useState<IUser |null>(null)
-    const [isLoggedIn,setIsLoggedIn] = useState <boolean>(false)
-    
-    const signup = async({name,email,password}:{name:string; email:string; password:string})=>{
-        try{
-          const {data} = await api.post('/api/auth/register',{name,email,password})
-          if(data.user){
-             setUser(data.user as IUser)
-             setIsLoggedIn(true)
-          }
-          toast.success(data.message);
-        }
-        catch(error){
-           console.log(error)
-        }
-    }
-    
-    const login =async ({email,password}:{email:string; password:string})=>{
-        try{
-          const {data} = await api.post('/api/auth/login',{email,password})
-          if(data.user){
-             setUser(data.user as IUser)
-             setIsLoggedIn(true)
-          }
-          toast.success(data.message);
-        }
-        catch(error){
-           console.log(error)
-        }
-        
-    }
-    
-    const logout =async()=>{
-        try{
-          const {data} = await api.post('/api/auth/logout')
-          setUser(null)
-          setIsLoggedIn(false)
-          toast.success(data.message);
-        }
-        catch(error){
-           console.log(error)
-        }
-        
-    }
-    
-    const fetchUser =async()=>{
-        try{
-          const {data} = await api.get('/api/auth/verify')
-          if(data.user){
-              setUser(data.user as IUser)
-              setIsLoggedIn(true)
-          }
-        }
-        catch(error){
-           console.log(error)
-        }
-        
-    }
-    
-    useEffect(()=>{
-      (async()=>{
-         await fetchUser();
-      })();
-    },[])
+  const [user, setUser] = useState<IUser | null>(null)
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
-    const value={
-       user,setUser,
-       isLoggedIn,setIsLoggedIn,
-       signup,login,logout
+  const signUp = async ({ name, email, password }: { name: string; email: string; password: string }) => {
+    try {
+      const { data } = await api.post('/api/auth/register', { name, email, password })
+      if (data.user) {
+        setUser(data.user as IUser)
+        setIsLoggedIn(true)
+      }
+      toast.success(data.message);
     }
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-            
-        </AuthContext.Provider>
-    )
+    catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message)
+      console.log(error)
+    }
+  }
+
+  const login = async ({ email, password }: { email: string; password: string }) => {
+    try {
+      const { data } = await api.post('/api/auth/login', { email, password })
+      if (data.user) {
+        setUser(data.user as IUser)
+        setIsLoggedIn(true)
+      }
+      toast.success(data.message);
+    }
+    catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message)
+      console.log(error)
+    }
+
+  }
+
+  const googleLogin = async (credential: string) => {
+    try {
+      const { data } = await api.post('/api/auth/google', { credential });
+      if (data.user) {
+        setUser(data.user as IUser);
+        setIsLoggedIn(true);
+      }
+      toast.success(data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+      console.log(error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      const { data } = await api.post('/api/auth/logout')
+      setUser(null)
+      setIsLoggedIn(false)
+      toast.success(data.message);
+    }
+    catch (error: any) {
+      console.log(error)
+    }
+
+  }
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await api.get('/api/auth/verify')
+      if (data.user) {
+        setUser(data.user as IUser)
+        setIsLoggedIn(true)
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      await fetchUser();
+    })();
+  }, [])
+
+  const value = {
+    user, setUser,
+    isLoggedIn, setIsLoggedIn,
+    signUp, login, logout, googleLogin
+  }
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 
-export const useAuth = ()=> useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext)
