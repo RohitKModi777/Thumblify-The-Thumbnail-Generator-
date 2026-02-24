@@ -1,36 +1,183 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
+/* ══════════════════════════════════════════
+   JEWEL ACCENT PALETTE (per-page)
+   Violet(home) | Emerald(generate) | Rose(about) | Cyan(contact) | Purple(login) | Sapphire(my-gen)
+══════════════════════════════════════════ */
+:root {
+    /* Violet — Home */
+    --violet-bright: #8b5cf6;
+    --violet-glow: rgba(139, 92, 246, 0.30);
+
+    /* Emerald — Generate */
+    --emerald-bright: #10b981;
+    --emerald-glow: rgba(16, 185, 129, 0.28);
+
+    /* Rose — About */
+    --rose-bright: #f43f5e;
+    --rose-glow: rgba(244, 63, 94, 0.28);
+
+    /* Cyan — Contact */
+    --cyan-bright: #06b6d4;
+    --cyan-glow: rgba(6, 182, 212, 0.28);
+
+    /* Purple — Login / Pricing Enterprise */
+    --purple-bright: #a855f7;
+    --purple-glow: rgba(168, 85, 247, 0.28);
+
+    /* Sapphire — MyGenerations / Pricing Basic */
+    --sapphire-bright: #3b82f6;
+    --sapphire-glow: rgba(59, 130, 246, 0.28);
+
+    /* Silver — universal neutral */
+    --silver-200: #e4e4e7;
+    --silver-300: #d4d4d8;
+    --silver-400: #a1a1aa;
+    --silver-500: #71717a;
+    --silver-600: #52525b;
+
+    /* Royal base */
+    --royal-black: #06050d;
+    --royal-surface: #0b0917;
+    --royal-card: #0f0c1f;
+}
+
 @theme {
     --font-poppins: "Poppins", sans-serif;
 }
 
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
 body {
-    @apply bg-black text-white text-sm antialiased font-poppins;
+    @apply text-white text-sm antialiased font-poppins;
+    background-color: var(--royal-black);
+    background-image:
+        radial-gradient(ellipse 80% 50% at 15% -10%, rgba(139, 92, 246, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 110%, rgba(6, 182, 212, 0.05) 0%, transparent 60%);
 }
 
 body::selection {
-    @apply bg-pink-600 text-white;
+    @apply bg-violet-600 text-white;
 }
 
 button {
     @apply cursor-pointer;
 }
 
+/* ══════════════════════════════════════════
+   HERO GRADIENT TEXT (animated)
+══════════════════════════════════════════ */
 .move-gradient {
-    background-image: linear-gradient(to right, var(--color-pink-500), var(--color-pink-300));
-    background-size: 200% 100%;
-    animation: movegradient 5s infinite;
+    background-image: linear-gradient(120deg,
+            #8b5cf6 0%,
+            #c4b5fd 22%,
+            #d4d4d8 40%,
+            #8b5cf6 58%,
+            #c4b5fd 76%,
+            #d4d4d8 90%,
+            #8b5cf6 100%);
+    background-size: 300% 100%;
+    animation: movegradient 5s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 0 6px;
+    border-radius: 10px;
 }
 
 @keyframes movegradient {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
+}
+
+/* ══════════════════════════════════════════
+   CARD SHIMMER
+══════════════════════════════════════════ */
+.card-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-shimmer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(108deg,
+            transparent 38%,
+            rgba(255, 255, 255, 0.04) 50%,
+            transparent 62%);
+    background-size: 200% 100%;
+    animation: shimmer 4s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ══════════════════════════════════════════
+   ROYAL DIVIDERS
+══════════════════════════════════════════ */
+.divider-violet {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.6), transparent);
+}
+
+.divider-emerald {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
+}
+
+.divider-rose {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(244, 63, 94, 0.6), transparent);
+}
+
+.divider-cyan {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.6), transparent);
+}
+
+.divider-silver {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(180, 180, 190, 0.5), transparent);
+}
+
+/* legacy alias */
+.royal-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+}
+
+/* ══════════════════════════════════════════
+   FORM INPUTS
+══════════════════════════════════════════ */
+input,
+textarea,
+select {
+    background: rgba(15, 12, 31, 0.7);
+    color: #f4f4f5;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #52525b;
 }
