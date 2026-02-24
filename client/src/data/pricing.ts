@@ -3,8 +3,9 @@ import type { IPricing } from "../types";
 export const pricingData: IPricing[] = [
     {
         name: "Basic",
-        price: 29,
+        price: 24,
         period: "month",
+        priceId: "price_basic_sandbox",    // Replace with your Stripe sandbox price ID
         features: [
             "50 AI Thumbnails/month",
             "Basic Templates",
@@ -16,12 +17,13 @@ export const pricingData: IPricing[] = [
     },
     {
         name: "Pro",
-        price: 79,
+        price: 99,
         period: "month",
+        priceId: "price_pro_sandbox",      // Replace with your Stripe sandbox price ID
         features: [
             "Unlimited AI thumbnails",
             "Premium Templates",
-            "4k Resolution",
+            "4K Resolution",
             "A/B Testing Tools",
             "Priority support",
             "Custom Fonts",
@@ -31,8 +33,9 @@ export const pricingData: IPricing[] = [
     },
     {
         name: "Enterprise",
-        price: 199,
+        price: 150,
         period: "month",
+        priceId: "price_enterprise_sandbox", // Replace with your Stripe sandbox price ID
         features: [
             "Everything in Pro",
             "API Access",
