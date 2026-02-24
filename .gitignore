@@ -1,2 +1,36 @@
-node_modules
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables
 .env
+**/.env
+.env.local
+.env.production
+
+# Build output
+dist/
+build/
+**/dist/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+
+# Temp image storage (server generates thumbnails here temporarily)
+server/images/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Model text files (dev notes)
+server/models.txt
+server/models_v2.txt
+server/model_names.txt
+server/check_models.ts
